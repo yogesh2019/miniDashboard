@@ -1,5 +1,31 @@
 <h1>Dashboard</h1>
 
-<p>
-  Dashboard page – content will be added later.
-</p>
+<table class="dashboard-table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Date Created</th>
+      <th>Status</th>
+      <th>Property Ref</th>
+      <th>Property Name</th>
+      <th>Post Code</th>
+      <th>Assessor</th>
+      <th>Reviewer</th>
+      <th>Next Event</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let record of records">
+      <td>{{ record.number }}</td>
+      <td>{{ record.dateCreated }}</td>
+      <td>{{ record.status }}</td>
+      <td>{{ record.propertyReference }}</td>
+      <td>{{ record.propertyName }}</td>
+      <td>{{ record.postCode }}</td>
+      <td>{{ record.assessor }}</td>
+      <td>{{ record.reviewer }}</td>
+      <td>{{ record.nextExpectedEvent }}</td>
+    </tr>
+  </tbody>
+</table>
