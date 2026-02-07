@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ChatService } from '../../services/chat.service';
 
 interface ChatMessage {
   sender: 'user' | 'bot';
@@ -8,7 +9,7 @@ interface ChatMessage {
 @Component({
   selector: 'app-chatbot',
   templateUrl: './chatbot.component.html',
-  styleUrls: ['./chatbot.component.css']
+  styleUrls: ['./chatbot.component.scss']
 })
 export class ChatbotComponent {
 
@@ -17,24 +18,36 @@ export class ChatbotComponent {
   ];
 
   userInput = '';
+  isLoading = false;
+
+  constructor(private chatService: ChatService) {}
 
   sendMessage(): void {
     if (!this.userInput.trim()) {
       return;
     }
 
-    // user message
-    this.messages.push({
-      sender: 'user',
-      text: this.userInput
-    });
+    const message = this.userInput;
 
-    // static bot reply (placeholder)
-    this.messages.push({
-      sender: 'bot',
-      text: 'I am a demo chatbot. AI will be added later.'
-    });
-
+    this.messages.push({ sender: 'user', text: message });
     this.userInput = '';
+    this.isLoading = true;
+
+    this.chatService.sendMessage(message).subscribe({
+      next: (res) => {
+        this.messages.push({
+          sender: 'bot',
+          text: res.reply
+        });
+        this.isLoading = false;
+      },
+      error: () => {
+        this.messages.push({
+          sender: 'bot',
+          text: 'Something went wrong. Please try again.'
+        });
+        this.isLoading = false;
+      }
+    });
   }
 }

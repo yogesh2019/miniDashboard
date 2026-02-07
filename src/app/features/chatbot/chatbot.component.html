@@ -1,17 +1,12 @@
 <div class="chatbot">
-  <div class="chat-header">
-    AI Assistant
-  </div>
+  <div class="chat-header">AI Assistant</div>
 
   <div class="chat-messages">
-    <div
-      *ngFor="let msg of messages"
-      class="message"
-      [ngClass]="msg.sender">
+    <div *ngFor="let msg of messages" class="message" [ngClass]="msg.sender">
       {{ msg.text }}
     </div>
   </div>
-
+  <div *ngIf="isLoading" class="message bot">Typing...</div>
   <div class="chat-input">
     <input
       type="text"
