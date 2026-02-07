@@ -1,1 +1,24 @@
-<p>chatbot works!</p>
+<div class="chatbot">
+  <div class="chat-header">
+    AI Assistant
+  </div>
+
+  <div class="chat-messages">
+    <div
+      *ngFor="let msg of messages"
+      class="message"
+      [ngClass]="msg.sender">
+      {{ msg.text }}
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <input
+      type="text"
+      [(ngModel)]="userInput"
+      placeholder="Type your question..."
+      (keyup.enter)="sendMessage()"
+    />
+    <button (click)="sendMessage()">Send</button>
+  </div>
+</div>

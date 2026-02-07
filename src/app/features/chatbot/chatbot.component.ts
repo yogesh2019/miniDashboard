@@ -1,15 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+
+interface ChatMessage {
+  sender: 'user' | 'bot';
+  text: string;
+}
 
 @Component({
   selector: 'app-chatbot',
   templateUrl: './chatbot.component.html',
-  styleUrls: ['./chatbot.component.scss']
+  styleUrls: ['./chatbot.component.css']
 })
-export class ChatbotComponent implements OnInit {
+export class ChatbotComponent {
 
-  constructor() { }
+  messages: ChatMessage[] = [
+    { sender: 'bot', text: 'Hello! How can I help you?' }
+  ];
 
-  ngOnInit(): void {
+  userInput = '';
+
+  sendMessage(): void {
+    if (!this.userInput.trim()) {
+      return;
+    }
+
+    // user message
+    this.messages.push({
+      sender: 'user',
+      text: this.userInput
+    });
+
+    // static bot reply (placeholder)
+    this.messages.push({
+      sender: 'bot',
+      text: 'I am a demo chatbot. AI will be added later.'
+    });
+
+    this.userInput = '';
   }
-
 }
