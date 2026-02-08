@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  ElementRef,
+  AfterViewChecked
+} from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 
 interface ChatMessage {
@@ -11,7 +16,12 @@ interface ChatMessage {
   templateUrl: './chatbot.component.html',
   styleUrls: ['./chatbot.component.scss']
 })
-export class ChatbotComponent {
+export class ChatbotComponent implements AfterViewChecked {
+
+  @ViewChild('messagesContainer')
+  private messagesContainer!: ElementRef;
+
+  isOpen = false;
 
   messages: ChatMessage[] = [
     { sender: 'bot', text: 'Hello! How can I help you?' }
@@ -22,10 +32,18 @@ export class ChatbotComponent {
 
   constructor(private chatService: ChatService) {}
 
-  sendMessage(): void {
-    if (!this.userInput.trim()) {
-      return;
+  ngAfterViewChecked(): void {
+    if (this.isOpen) {
+      this.scrollToBottom();
     }
+  }
+
+  toggleChat(): void {
+    this.isOpen = !this.isOpen;
+  }
+
+  sendMessage(): void {
+    if (!this.userInput.trim()) return;
 
     const message = this.userInput;
 
@@ -49,5 +67,12 @@ export class ChatbotComponent {
         this.isLoading = false;
       }
     });
+  }
+
+  private scrollToBottom(): void {
+    if (!this.messagesContainer) return;
+
+    this.messagesContainer.nativeElement.scrollTop =
+      this.messagesContainer.nativeElement.scrollHeight;
   }
 }
